@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Container, Stack, Box, Heading, Button, Text, Input } from '@chakra-ui/react'
 import Image from 'next/image'
 import Head from 'next/head'
-import { auth } from './api/login'
+import { logIn } from './api/login'
 
 
 import styles from '../styles/HomePage.module.css'
@@ -93,7 +93,7 @@ function FirstSection() {
                                 boxShadow: 'xl',
                             }}
                             loadingText='Enviando'
-                            onClick={() => auth(credentials)}
+                            onClick={() => logIn(credentials)}
                         >
                             Entrar
                         </Button>
