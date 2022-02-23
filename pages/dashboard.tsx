@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { Container, Stack, Box, Heading, Button, Text, Input } from '@chakra-ui/react'
 import Image from 'next/image'
 import Head from 'next/head'
-import { auth } from './api/login'
 
 
 import styles from '../styles/HomePage.module.css'
@@ -29,9 +27,6 @@ export default function Login() {
 
 // First section: headers and titles
 function FirstSection() {
-
-    const [credentials, setCredentials] = useState({cpf:'',password:''})
-    const [token, setToken] = useState()
 
     return (
 
@@ -61,8 +56,6 @@ function FirstSection() {
                                     fontFamily: 'Poppins'
                                 }}
                                 name="cpf"
-                                value={credentials.cpf}
-                                onChange={value => setCredentials({ ...credentials, cpf: value.currentTarget.value })}
                             />
                             <Input
                                 placeholder="Senha"
@@ -76,8 +69,6 @@ function FirstSection() {
                                 }}
                                 name="password"
                                 type="password"
-                                value={credentials.password}
-                                onChange={value => setCredentials({ ...credentials, password: value.currentTarget.value })}
                             />
                             
 
@@ -93,7 +84,6 @@ function FirstSection() {
                                 boxShadow: 'xl',
                             }}
                             loadingText='Enviando'
-                            onClick={() => auth(credentials)}
                         >
                             Entrar
                         </Button>
