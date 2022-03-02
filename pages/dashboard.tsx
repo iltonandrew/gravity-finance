@@ -4,7 +4,10 @@ import Head from 'next/head'
 
 
 import styles from '../styles/HomePage.module.css'
-
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies'
 
 export default function Login() {
 
@@ -24,9 +27,10 @@ export default function Login() {
     );
 }
 
-
 // First section: headers and titles
 function FirstSection() {
+
+    const { user } = useContext(AuthContext)
 
     return (
 
@@ -44,49 +48,8 @@ function FirstSection() {
                     maxW={{ lg: 'lg' }}
                 >
                     <Box as={'form'}>
-                        <Stack spacing={4}>
-                            <Input
-                                placeholder="CPF"
-                                bg={'gray.100'}
-                                border={0}
-                                color={'gray.500'}
-                                _placeholder={{
-                                    fontSize: 12,
-                                    color: 'gray.500',
-                                    fontFamily: 'Poppins'
-                                }}
-                                name="cpf"
-                            />
-                            <Input
-                                placeholder="Senha"
-                                bg={'gray.100'}
-                                border={0}
-                                color={'gray.500'}
-                                _placeholder={{
-                                    fontSize: 12,
-                                    color: 'gray.500',
-                                    fontFamily: 'Poppins'
-                                }}
-                                name="password"
-                                type="password"
-                            />
-                            
-
-                        </Stack>
-                        <Button
-                            fontFamily={'heading'}
-                            mt={8}
-                            w={'full'}
-                            bgGradient="linear(to-r, secondary.main,primary.main)"
-                            color={'white'}
-                            _hover={{
-                                bgGradient: 'linear(to-r, secondary.main, primary.main)',
-                                boxShadow: 'xl',
-                            }}
-                            loadingText='Enviando'
-                        >
-                            Entrar
-                        </Button>
+                        Dashboard
+                        olá {user?.name}
                     </Box>
 
                 </Stack>
@@ -96,4 +59,20 @@ function FirstSection() {
         </Container>
 
     );
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const { token } = parseCookies(ctx)
+
+    if(!token) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
+    return {
+        props: {}
+    }
 }
