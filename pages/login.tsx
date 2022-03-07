@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import { Container, Stack, Box, Heading, Button, Text, Input } from '@chakra-ui/react'
+import { useContext, useState } from 'react'
+import { Container, Stack, Box, Button, Input } from '@chakra-ui/react'
 import Image from 'next/image'
 import Head from 'next/head'
-import { logIn } from './api/login'
+import { AuthContext } from '../contexts/AuthContext'
 
 
 import styles from '../styles/HomePage.module.css'
 
-
 export default function Login() {
-
 
     return (
 
@@ -26,12 +24,16 @@ export default function Login() {
     );
 }
 
-
 // First section: headers and titles
 function FirstSection() {
 
     const [credentials, setCredentials] = useState({cpf:'',password:''})
-    const [token, setToken] = useState()
+    const { signIn } = useContext(AuthContext)
+
+    async function handleLogIn(credentials: { cpf: string; password: string }) {
+        // mostrar msg de erro
+        await signIn(credentials)
+    }
 
     return (
 
@@ -93,7 +95,7 @@ function FirstSection() {
                                 boxShadow: 'xl',
                             }}
                             loadingText='Enviando'
-                            onClick={() => logIn(credentials)}
+                            onClick={() => handleLogIn(credentials)}
                         >
                             Entrar
                         </Button>
