@@ -4,6 +4,8 @@ import Head from 'next/head'
 
 
 import styles from '../styles/HomePage.module.css'
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies'
 
 
 export default function Login() {
@@ -96,4 +98,20 @@ function FirstSection() {
         </Container>
 
     );
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const { token } = parseCookies(ctx)
+
+    if(!token) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
+    return {
+        props: {}
+    }
 }
