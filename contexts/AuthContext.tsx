@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         setUser(user)
-        Router.push('/dashboard')
+        Router.push('/dummy')
     }
 
     return (

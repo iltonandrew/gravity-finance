@@ -48,7 +48,8 @@ function FirstSection() {
                     maxW={{ lg: 'lg' }}
                 >
                     <Box as={'form'}>
-                        Dashboard
+                        Dummy Page:
+                        <br/>
                         olá {user?.name}
                     </Box>
 
