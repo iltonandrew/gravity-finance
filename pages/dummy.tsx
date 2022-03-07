@@ -1,13 +1,13 @@
 import { Container, Stack, Box, Heading, Button, Text, Input } from '@chakra-ui/react'
 import Image from 'next/image'
 import Head from 'next/head'
-
-
-import styles from '../styles/HomePage.module.css'
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies'
+
+
+import styles from '../styles/HomePage.module.css'
 
 export default function Login() {
 
@@ -31,7 +31,6 @@ export default function Login() {
 function FirstSection() {
 
     const { user } = useContext(AuthContext)
-
     return (
 
         <Container h='100vh' maxW='100%' position='relative' bgImage='/stars.jpg' bgSize='cover' p={0}>
@@ -60,8 +59,7 @@ function FirstSection() {
         </Container>
 
     );
-}
-
+  
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { token } = parseCookies(ctx)
 
