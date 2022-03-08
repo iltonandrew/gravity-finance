@@ -1,16 +1,20 @@
 import axios from "axios"
-import { BASE_URL } from "../pages/api/constants"
+import { BASE_URL, BASE_URL_LOCAL } from "../pages/api/constants"
 import { parseCookies } from 'nookies';
 
-const { token } = parseCookies();
+export const api = Api();
 
-export const api = axios.create({
-    baseURL: BASE_URL
-})
+export function Api(ctx?: any) {
+    const { token } = parseCookies(ctx);
 
-if (token) {
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    const api = axios.create({
+        baseURL: BASE_URL_LOCAL
+    })
+
+    if (token) {
+        api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return api;
 }
-
-
 

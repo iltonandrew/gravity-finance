@@ -1,9 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { setCookie, parseCookies } from 'nookies'
 import Router from 'next/router'
 
 import { logIn, recoverUserInfo } from "../services/auth";
 import { api } from "../services/api";
+import { User } from "public/model/User";
 
 type AuthContextType = {
     user: User| null;
@@ -16,14 +17,13 @@ type CredentialsType = {
     password: string
 }
 
-type  User = {
-    cpf: string;
-    name: string;
-}
-
 export const AuthContext = createContext({} as AuthContextType)
 
-export function AuthProvider({ children }) {
+type AuthProviderProps = {
+    children?: ReactNode
+}
+
+export function AuthProvider({ children  }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
 
     const isAuthenticated = !!user;
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         setUser(user)
-        Router.push('/dummy')
+        Router.push('/dashboard')
     }
 
     return (
