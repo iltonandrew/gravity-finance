@@ -41,7 +41,7 @@ export default function Dashboard() {
   const [display, changeDisplay] = useState("hide");
   const [value, changeValue] = useState(1);
 
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
 
   return (
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
@@ -53,7 +53,7 @@ export default function Dashboard() {
         <Heading fontWeight="normal" mb={4} letterSpacing="tight">
           Welcome back,{" "}
           <Flex display="inline-flex" fontWeight="bold">
-            { user?.firstName }
+            {user?.firstName}
           </Flex>
         </Heading>
         <Text color="gray" fontSize="sm">
@@ -462,20 +462,19 @@ export default function Dashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { token } = parseCookies(ctx)
+  const { token } = parseCookies(ctx);
   const apiClient = Api(ctx);
 
-  if(!token) {
-      return {
-          redirect: {
-              destination: '/login',
-              permanent: false,
-          }
-      }
-  }
+  // if(!token) {
+  //     return {
+  //         redirect: {
+  //             destination: '/login',
+  //             permanent: false,
+  //         }
+  //     }
+  // }
 
   return {
-      props: {
-      }
-  }
-}
+    props: {},
+  };
+};
