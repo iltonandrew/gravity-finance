@@ -440,18 +440,13 @@ export default function Dashboard() {
         </Heading>
         <Flex>
           <AvatarGroup size="md" max={3}>
-            <Avatar src="https://scontent.fcgh9-1.fna.fbcdn.net/v/t1.6435-9/79971664_2691079274268461_4592629501938106368_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFpPSIdZLcAjTJOYH755xEAI80_X0rBZhQjzT9fSsFmFJLkK_R72lopQimuAxCmi4Jw0tTnjM7heESdqubYhrpY&_nc_ohc=wDMl2rwNscoAX-oHLeT&_nc_ht=scontent.fcgh9-1.fna&oh=00_AT9ikZtKXG9Os2l-Z2ep75E58droWiHYHtejvpM_R8l0fg&oe=624CE0A8" />
+            <Avatar src="avatar-3.jpg" />
             <Avatar src="avatar-3.jpg" />
             <Avatar src="avatar-4.jpg" />
             <Avatar src="avatar-4.jpg" />
             <Avatar src="avatar-4.jpg" />
           </AvatarGroup>
-          <Avatar
-            src="https://scontent.fcgh9-1.fna.fbcdn.net/v/t1.6435-9/79971664_2691079274268461_4592629501938106368_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFpPSIdZLcAjTJOYH755xEAI80_X0rBZhQjzT9fSsFmFJLkK_R72lopQimuAxCmi4Jw0tTnjM7heESdqubYhrpY&_nc_ohc=wDMl2rwNscoAX-oHLeT&_nc_ht=scontent.fcgh9-1.fna&oh=00_AT9ikZtKXG9Os2l-Z2ep75E58droWiHYHtejvpM_R8l0fg&oe=624CE0A8"
-            ml={2}
-            color="#fff"
-            bgColor="gray.300"
-          />
+          <Avatar src="avatar-3.jpg" ml={2} color="#fff" bgColor="gray.300" />
         </Flex>
         <Text color="gray" mt={10} mb={2}>
           Card number
