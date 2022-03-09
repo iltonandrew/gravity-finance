@@ -41,7 +41,16 @@ export default function Dashboard() {
   const [display, changeDisplay] = useState("hide");
   const [value, changeValue] = useState(1);
 
-  const { user } = useContext(AuthContext);
+  let { user } = useContext(AuthContext);
+
+  if (!user) {
+    user = {
+      cpf: "426.123.420-00",
+      name: "Ilton Andrew",
+      firstName: "Ilton",
+      lastName: "Andrew",
+    };
+  }
 
   return (
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
@@ -89,7 +98,11 @@ export default function Dashboard() {
                 <Tr>
                   <Td>
                     <Flex align="center">
-                      <Avatar size="sm" mr={2} src="amazon.jpeg" />
+                      <Avatar
+                        size="sm"
+                        mr={2}
+                        src="https://scontent.fcgh9-1.fna.fbcdn.net/v/t1.6435-9/79971664_2691079274268461_4592629501938106368_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFpPSIdZLcAjTJOYH755xEAI80_X0rBZhQjzT9fSsFmFJLkK_R72lopQimuAxCmi4Jw0tTnjM7heESdqubYhrpY&_nc_ohc=wDMl2rwNscoAX-oHLeT&_nc_ht=scontent.fcgh9-1.fna&oh=00_AT9ikZtKXG9Os2l-Z2ep75E58droWiHYHtejvpM_R8l0fg&oe=624CE0A8"
+                      />
                       <Flex flexDir="column">
                         <Heading size="sm" letterSpacing="tight">
                           Amazon
