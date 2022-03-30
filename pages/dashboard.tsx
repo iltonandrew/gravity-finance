@@ -27,41 +27,22 @@ import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { Api } from "services/api";
 import axios from "axios";
-import Statment from "components/Statement";
+import Statment from "components/StatementItem";
+import { FinanceDataType } from "public/model/FinanceData";
+import StatementTable from "components/StatementTable";
+import { timeStamp } from "console";
 
-export default function Dashboard() {
+type DashboardPropsType = {
+  timestamp: Date;
+  financeDataItems: FinanceDataType[]
+}
+
+export default function Dashboard(props: DashboardPropsType) {
   const [display, changeDisplay] = useState("hide");
   const [value, changeValue] = useState(1);
-  const [statements, setStatements] = useState([]);
-
-  const config = {
-    headers: {
-      Authorization:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjcGYiOiI0MDQ1NzE2Mjg5OSJ9.NdcQen3CPKLXe54OgfuEKtyXAxL2v6OhGBMEuqB9PFA",
-    },
-  };
-
-  const getRequest = axios.get("https://470w0jp9q6.execute-api.us-east-1.amazonaws.com/dev/statement/get/0", config);
+  const [statements, setStatements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
 
   let { user } = useContext(AuthContext);
-
-  if (!user) {
-    user = {
-      cpf: "426.123.420-00",
-      name: "Ilton Andrew",
-      firstName: "Ilton",
-      lastName: "Andrew",
-    };
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getRequest;
-      console.log(response.data);
-      setStatements(response.data);
-    };
-    fetchData();
-  }, []);
 
   return (
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
@@ -96,27 +77,7 @@ export default function Dashboard() {
         </Flex>
         <Flex flexDir="column">
           <Flex overflow="auto">
-            <Table variant="unstyled" mt={4}>
-              <Thead>
-                <Tr color="gray">
-                  <Th>Name of transaction</Th>
-                  <Th>Category</Th>
-                  <Th isNumeric>Amount</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {statements.map((statement) => (
-                  <Statment {...statement} />
-                ))}
-                {display == "show" && (
-                  <>
-                    {statements.map((statement) => (
-                      <Statment {...statement} />
-                    ))}
-                  </>
-                )}
-              </Tbody>
-            </Table>
+            <StatementTable statements={statements}></StatementTable>
           </Flex>
           <Flex align="center">
             <Divider />
@@ -328,18 +289,32 @@ export default function Dashboard() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { token } = parseCookies(ctx);
+  if(!token) {
+      return {
+          redirect: {
+              destination: '/login',
+              permanent: false,
+          }
+      }
+  }
+
   const apiClient = Api(ctx);
+  
+  return apiClient.get('/financeData').then((res) => {
+    let timeStamp: Date;
+    let financeDataItems: FinanceDataType[];
 
-  // if(!token) {
-  //     return {
-  //         redirect: {
-  //             destination: '/login',
-  //             permanent: false,
-  //         }
-  //     }
-  // }
+    financeDataItems = res.data.financeDataItems as FinanceDataType[];
+    timeStamp = res.data.timeStamp;
 
-  return {
-    props: {},
-  };
+    return {
+      props: {timeStamp, financeDataItems},
+    };
+  }).catch(() => {
+    return {
+      props: { },
+    };
+  })
+
+  
 };

@@ -1,6 +1,11 @@
 import { Flex, Heading, Avatar, Text, Tr, Td } from "@chakra-ui/react";
+import { FinanceDataType } from "public/model/FinanceData";
 
-export default function Statement(props: any) {
+type StatementTableItemType = {
+  statement: FinanceDataType
+}
+
+export default function StatementTableItem(props: StatementTableItemType) {
   return (
     <Tr>
       <Td>
@@ -8,18 +13,18 @@ export default function Statement(props: any) {
           <Avatar size="sm" mr={2} src="amazon.jpeg" />
           <Flex flexDir="column">
             <Heading size="sm" letterSpacing="tight">
-              {props.name}
+              {props.statement.establishmentName}
             </Heading>
             <Text fontSize="sm" color="gray">
-              {props.date}
+              {props.statement.referenceDate}
             </Text>
           </Flex>
         </Flex>
       </Td>
-      <Td>{props.type}</Td>
+      <Td>{props.statement.establishmentType}</Td>
       <Td isNumeric>
         <Text fontWeight="bold" display="inline-table">
-          -${props.value}
+          -${props.statement.value}
         </Text>
       </Td>
     </Tr>
