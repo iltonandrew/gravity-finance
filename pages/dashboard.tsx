@@ -12,7 +12,6 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
   Divider,
   Box,
   Button,
@@ -20,16 +19,7 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import {
-  FiDollarSign,
-  FiCalendar,
-  FiChevronDown,
-  FiChevronUp,
-  FiPlus,
-  FiCreditCard,
-  FiSearch,
-  FiBell,
-} from "react-icons/fi";
+import { FiDollarSign, FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
 import Sidebar from "components/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
@@ -116,12 +106,12 @@ export default function Dashboard() {
               </Thead>
               <Tbody>
                 {statements.map((statement) => (
-                  <Statment key={statement.id} {...statement} />
+                  <Statment {...statement} />
                 ))}
                 {display == "show" && (
                   <>
                     {statements.map((statement) => (
-                      <Statment key={statement.id} {...statement} />
+                      <Statment {...statement} />
                     ))}
                   </>
                 )}
