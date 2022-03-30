@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Flex,
   Heading,
@@ -36,10 +36,22 @@ import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { Api } from "services/api";
+import axios from "axios";
+import Statment from "components/Statement";
 
 export default function Dashboard() {
   const [display, changeDisplay] = useState("hide");
   const [value, changeValue] = useState(1);
+  const [statements, setStatements] = useState([]);
+
+  const config = {
+    headers: {
+      Authorization:
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjcGYiOiI0MDQ1NzE2Mjg5OSJ9.NdcQen3CPKLXe54OgfuEKtyXAxL2v6OhGBMEuqB9PFA",
+    },
+  };
+
+  const getRequest = axios.get("https://470w0jp9q6.execute-api.us-east-1.amazonaws.com/dev/statement/get/0", config);
 
   let { user } = useContext(AuthContext);
 
@@ -51,6 +63,15 @@ export default function Dashboard() {
       lastName: "Andrew",
     };
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getRequest;
+      console.log(response.data);
+      setStatements(response.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
@@ -90,151 +111,18 @@ export default function Dashboard() {
                 <Tr color="gray">
                   <Th>Name of transaction</Th>
                   <Th>Category</Th>
-                  <Th isNumeric>Cashback</Th>
                   <Th isNumeric>Amount</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>
-                    <Flex align="center">
-                      <Avatar size="sm" mr={2} src="amazon.jpeg" />
-                      <Flex flexDir="column">
-                        <Heading size="sm" letterSpacing="tight">
-                          Amazon
-                        </Heading>
-                        <Text fontSize="sm" color="gray">
-                          Apr 24, 2021 at 1:40pm
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </Td>
-                  <Td>Electronic Devices</Td>
-                  <Td isNumeric>+$2</Td>
-                  <Td isNumeric>
-                    <Text fontWeight="bold" display="inline-table">
-                      -$242
-                    </Text>
-                    .00
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Flex align="center">
-                      <Avatar size="sm" mr={2} src="starbucks.png" />
-                      <Flex flexDir="column">
-                        <Heading size="sm" letterSpacing="tight">
-                          Starbucks
-                        </Heading>
-                        <Text fontSize="sm" color="gray">
-                          Apr 22, 2021 at 2:43pm
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </Td>
-                  <Td>Cafe and restaurant</Td>
-                  <Td isNumeric>+$23</Td>
-                  <Td isNumeric>
-                    <Text fontWeight="bold" display="inline-table">
-                      -$32
-                    </Text>
-                    .00
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Flex align="center">
-                      <Avatar size="sm" mr={2} src="youtube.png" />
-                      <Flex flexDir="column">
-                        <Heading size="sm" letterSpacing="tight">
-                          YouTube
-                        </Heading>
-                        <Text fontSize="sm" color="gray">
-                          Apr 13, 2021 at 11:23am
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </Td>
-                  <Td>Social Media</Td>
-                  <Td isNumeric>+$4</Td>
-                  <Td isNumeric>
-                    <Text fontWeight="bold" display="inline-table">
-                      -$112
-                    </Text>
-                    .00
-                  </Td>
-                </Tr>
+                {statements.map((statement) => (
+                  <Statment key={statement.id} {...statement} />
+                ))}
                 {display == "show" && (
                   <>
-                    <Tr>
-                      <Td>
-                        <Flex align="center">
-                          <Avatar size="sm" mr={2} src="amazon.jpeg" />
-                          <Flex flexDir="column">
-                            <Heading size="sm" letterSpacing="tight">
-                              Amazon
-                            </Heading>
-                            <Text fontSize="sm" color="gray">
-                              Apr 12, 2021 at 9:40pm
-                            </Text>
-                          </Flex>
-                        </Flex>
-                      </Td>
-                      <Td>Electronic Devices</Td>
-                      <Td isNumeric>+$2</Td>
-                      <Td isNumeric>
-                        <Text fontWeight="bold" display="inline-table">
-                          -$242
-                        </Text>
-                        .00
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>
-                        <Flex align="center">
-                          <Avatar size="sm" mr={2} src="starbucks.png" />
-                          <Flex flexDir="column">
-                            <Heading size="sm" letterSpacing="tight">
-                              Starbucks
-                            </Heading>
-                            <Text fontSize="sm" color="gray">
-                              Apr 10, 2021 at 2:10pm
-                            </Text>
-                          </Flex>
-                        </Flex>
-                      </Td>
-                      <Td>Cafe and restaurant</Td>
-                      <Td isNumeric>+$23</Td>
-                      <Td isNumeric>
-                        <Text fontWeight="bold" display="inline-table">
-                          -$32
-                        </Text>
-                        .00
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>
-                        <Flex align="center">
-                          <Avatar size="sm" mr={2} src="youtube.png" />
-                          <Flex flexDir="column">
-                            <Heading size="sm" letterSpacing="tight">
-                              YouTube
-                            </Heading>
-                            <Text fontSize="sm" color="gray">
-                              Apr 7, 2021 at 9:03am
-                            </Text>
-                          </Flex>
-                        </Flex>
-                      </Td>
-                      <Td>Social Media</Td>
-                      <Td isNumeric>+$4</Td>
-                      <Td isNumeric>
-                        <Text fontWeight="bold" display="inline-table">
-                          -$112
-                        </Text>
-                        .00
-                      </Td>
-                    </Tr>
+                    {statements.map((statement) => (
+                      <Statment key={statement.id} {...statement} />
+                    ))}
                   </>
                 )}
               </Tbody>
@@ -272,14 +160,7 @@ export default function Dashboard() {
             <InputLeftElement pointerEvents="none" children={<FiSearch color="gray" />} />
             <Input type="number" placeholder="Search" borderRadius="10px" />
           </InputGroup>
-          <IconButton
-            icon={<FiBell />}
-            fontSize="sm"
-            bgColor="#fff"
-            borderRadius="50%"
-            p="10px"
-            aria-label="aa"
-          />
+          <IconButton icon={<FiBell />} fontSize="sm" bgColor="#fff" borderRadius="50%" p="10px" aria-label="aa" />
           <Flex
             w={30}
             h={25}
@@ -406,24 +287,9 @@ export default function Dashboard() {
           </Box>
         )}
         <Flex justifyContent="center" mt={2}>
-          <Button
-            bgColor={value == 1 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeValue(1)}
-          />
-          <Button
-            bgColor={value == 2 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeValue(2)}
-          />
-          <Button
-            bgColor={value == 3 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeValue(3)}
-          />
+          <Button bgColor={value == 1 ? "gray.600" : "gray.400"} size="xs" mx={1} onClick={() => changeValue(1)} />
+          <Button bgColor={value == 2 ? "gray.600" : "gray.400"} size="xs" mx={1} onClick={() => changeValue(2)} />
+          <Button bgColor={value == 3 ? "gray.600" : "gray.400"} size="xs" mx={1} onClick={() => changeValue(3)} />
         </Flex>
         <Flex flexDir="column" my={4}>
           <Flex justify="space-between" mb={2}>
