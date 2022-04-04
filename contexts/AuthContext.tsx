@@ -2,20 +2,29 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 
-import { logIn, recoverUserInfo } from "../services/auth";
+import { logIn, recoverUserInfo, register } from "../services/auth";
 import { api } from "../services/api";
 import { User } from "public/model/User";
+import next from "next";
 
 type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
-  signIn: (data: CredentialsType) => Promise<void>;
+  signIn: (data: CredentialsType) => Promise<unknown>;
+  signUp: (data: NewUserType) => Promise<unknown>;
 };
 
 type CredentialsType = {
   cpf: string;
   password: string;
 };
+
+type NewUserType = {
+  cpf: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
 
 export const AuthContext = createContext({} as AuthContextType);
 
@@ -39,20 +48,51 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   async function signIn({ cpf, password }: CredentialsType) {
-    const { token, user } = await logIn({
-      cpf,
-      password,
-    });
+    return new Promise((resolve, reject) => {
+      logIn({
+        cpf,
+        password,
+      }).then((res: any) => {
+        const { token, user } = res;
 
-    setCookie(undefined, "token", token, {
-      maxAge: 60 * 60 * 1, // 1hour
-    });
-
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-    setUser(user);
-    Router.push("/dashboard");
+        setCookie(undefined, "token", token, {
+          maxAge: 60 * 60 * 1, // 1hour
+        });
+    
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    
+        setUser(user);
+        Router.push("/dashboard");
+      }, (err) => reject(err));
+    })
   }
 
-  return <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>{children}</AuthContext.Provider>;
+  async function signUp({ cpf, password, firstName, lastName }: NewUserType) {
+
+    return new Promise((resolve, reject) => {
+      register({
+        cpf,
+        password,
+        firstName,
+        lastName
+      }).then((res: any) => {
+  
+        const { token, user } = res;
+  
+        setCookie(undefined, "token", token, {
+          maxAge: 60 * 60 * 1, // 1hour
+        });
+    
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    
+        setUser(user);
+        Router.push("/dashboard");
+  
+      }, (err) => reject(err));
+    })
+    
+    
+  }
+
+  return <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp }}>{children}</AuthContext.Provider>;
 }

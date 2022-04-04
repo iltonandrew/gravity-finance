@@ -1,3 +1,5 @@
+import next from "next";
+import { resolve } from "path";
 import { BASE_URL } from "../pages/api/constants";
 import { api } from "./api";
 
@@ -6,16 +8,39 @@ type CredentialsType = {
   password: string;
 };
 
+type NewUserType = {
+  cpf: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
 export async function logIn({ cpf, password }: CredentialsType) {
-  return api
-    .post("/auth", { cpf, password })
-    .then(function (response) {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  return new Promise((res, reject) => {
+    api
+      .post("/auth", { cpf, password })
+      .then((response) => {
+        res(response.data);
+      })
+      .catch((error) => {
+        reject(error.response)
+      });
+  })
 }
+
+export async function register({ cpf, password, firstName, lastName }: NewUserType) {
+  return new Promise((res, reject) => {
+    api
+      .post("/auth/register", { cpf, password, firstName, lastName })
+      .then((response) => {
+        res(response.data);
+      })
+      .catch((error) => {
+        reject(error.response)
+      });
+  })
+}
+
 
 export async function recoverUserInfo(token: string) {
   return api

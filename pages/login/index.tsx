@@ -1,18 +1,29 @@
 import { useContext, useState } from "react";
-import { Container, Stack, Box, Button, Input, Link } from "@chakra-ui/react";
+import { Stack, Box, Button, Input, Link, useToast } from "@chakra-ui/react";
 import Image from "next/image";
-import Head from "next/head";
 import { AuthContext } from "../../contexts/AuthContext";
 import NextLink from "next/link";
 import GravityFinanceBackground from "components/GravityFinanceBackground";
+import Router from "next/router";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ cpf: "", password: "" });
   const { signIn } = useContext(AuthContext);
+  const toast = useToast();
 
   async function handleLogIn(credentials: { cpf: string; password: string }) {
+    toast({
+        title: 'Entrando...',
+        status: 'info',
+    })
     // mostrar msg de erro
-    await signIn(credentials);
+    await signIn(credentials).catch((err) => {
+      toast({
+        title: `${err.data.msg}`,
+        status: 'error',
+        isClosable: true,
+      })  
+    })
   }
 
   return (
