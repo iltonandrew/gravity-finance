@@ -8,7 +8,7 @@ export function Api(ctx?: any) {
   const { token } = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: BASE_URL,
+    baseURL: BASE_URL_LOCAL,
   });
 
   if (token) {

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
   Flex,
   Heading,
@@ -7,11 +7,6 @@ import {
   Text,
   Icon,
   IconButton,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
   Divider,
   Box,
   Button,
@@ -26,11 +21,8 @@ import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { Api } from "services/api";
-import axios from "axios";
-import Statment from "components/StatementItem";
 import { FinanceDataType } from "public/model/FinanceData";
 import StatementTable from "components/StatementTable";
-import { timeStamp } from "console";
 
 type DashboardPropsType = {
   timestamp: Date;
@@ -303,6 +295,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return apiClient.get('/financeData').then((res) => {
     let timeStamp: Date;
     let financeDataItems: FinanceDataType[];
+
+    if(!res.data) {
+      return {
+        props: { financeDataItems: [] }
+      }
+    }
 
     financeDataItems = res.data.financeDataItems as FinanceDataType[];
     timeStamp = res.data.timeStamp;
