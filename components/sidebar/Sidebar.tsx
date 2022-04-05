@@ -13,10 +13,15 @@ export default function Sidebar(props: SidebarPropsType) {
       w={["100%", "100%", "10%", "15%", "15%"]}
       flexDir="column"
       alignItems="center"
-      backgroundColor="#020202"
+      bgImage="/stars.jpg"
       color="#fff"
     >
-      <Flex flexDir="column" h={[null, null, "100vh"]} justifyContent="space-between">
+      <Flex
+        flexDir="column"
+        h={[null, null, "100vh"]}
+        justifyContent="space-between"
+        bg="linear-gradient(174deg, rgba(34,47,70,1) 0%, rgb(213 167 65 / 58%) 100%)"
+      >
         <Flex flexDir="column" as="nav">
           <Heading
             mt={50}
