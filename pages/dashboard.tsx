@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
+import { DoughnutChart } from "components/Doughnut";
 import Sidebar from "components/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
@@ -53,7 +54,15 @@ export default function Dashboard(props: DashboardPropsType) {
         <Text fontWeight="bold" fontSize="2xl">
           $5,750.20
         </Text>
-        <MyChart />
+        <Flex flex="1" alignItems="center">
+          <div style={{ height: 500, width: 500 }}>
+            <MyChart />
+          </div>
+          <div style={{ height: 500, width: 500 }}>
+            <DoughnutChart />
+          </div>
+        </Flex>
+
         <Flex justifyContent="space-between" mt={8}>
           <Flex align="flex-end">
             <Heading as="h2" size="lg" letterSpacing="tight">

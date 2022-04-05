@@ -40,7 +40,7 @@ const data = {
 };
 
 const options = {
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   scales: {
     x: {
       grid: {
