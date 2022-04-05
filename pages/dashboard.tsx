@@ -15,6 +15,7 @@ import {
 import { FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
 import { DoughnutChart } from "components/Doughnut";
+import { BarChart } from "components/StackedBar";
 import Sidebar from "components/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
@@ -31,6 +32,7 @@ type DashboardPropsType = {
 export default function Dashboard(props: DashboardPropsType) {
   const [display, changeDisplay] = useState("hide");
   const [value, changeValue] = useState(1);
+  const [chartValue, changeChartValue] = useState(1);
   const [statements, setStatements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
 
   let { user } = useContext(AuthContext);
@@ -48,19 +50,40 @@ export default function Dashboard(props: DashboardPropsType) {
             {user?.firstName}
           </Flex>
         </Heading>
+        <Flex justifyContent="center" mt={2}>
+          <Button
+            title="Line Chart"
+            bgColor={chartValue == 1 ? "gray.600" : "gray.400"}
+            size="xs"
+            mx={1}
+            onClick={() => changeChartValue(1)}
+          />
+          <Button
+            title="Doughnut Chart"
+            bgColor={chartValue == 2 ? "gray.600" : "gray.400"}
+            size="xs"
+            mx={1}
+            onClick={() => changeChartValue(2)}
+          />
+          <Button
+            title="Bar Chart"
+            bgColor={chartValue == 3 ? "gray.600" : "gray.400"}
+            size="xs"
+            mx={1}
+            onClick={() => changeChartValue(3)}
+          />
+        </Flex>
         <Text color="gray" fontSize="sm">
           My Balance
         </Text>
         <Text fontWeight="bold" fontSize="2xl">
           $5,750.20
         </Text>
+
         <Flex flex="1" alignItems="center">
-          <div style={{ height: 500, width: 500 }}>
-            <MyChart />
-          </div>
-          <div style={{ height: 500, width: 500 }}>
-            <DoughnutChart />
-          </div>
+          {chartValue == 1 && <MyChart />}
+          {chartValue == 2 && <DoughnutChart />}
+          {chartValue == 3 && <BarChart />}
         </Flex>
 
         <Flex justifyContent="space-between" mt={8}>
