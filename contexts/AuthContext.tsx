@@ -5,7 +5,6 @@ import Router from "next/router";
 import { logIn, recoverUserInfo, register } from "../services/auth";
 import { api } from "../services/api";
 import { User } from "public/model/User";
-import next from "next";
 
 type AuthContextType = {
   user: User | null;
