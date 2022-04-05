@@ -1,7 +1,7 @@
 import { Flex, Heading, Avatar, Text } from "@chakra-ui/react";
 import { FiHome, FiPieChart, FiDollarSign, FiBox } from "react-icons/fi";
 import SidebarItem from "./SidebarItems";
-import { User } from "../../public/model/User";
+import { User } from "../../../public/model/User";
 import { useContext } from "react";
 import { AuthContext } from "contexts/AuthContext";
 

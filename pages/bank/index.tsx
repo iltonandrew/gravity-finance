@@ -1,7 +1,8 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import BankCard from "components/bank/BankCard";
-import Content from "components/content/Content";
-import Sidebar from "components/sidebar/Sidebar";
+import Content from "components/PageComponents/content/Content";
+import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
+import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { useContext } from "react";
 
@@ -13,7 +14,7 @@ export default function Bank() {
 
     return (
         
-    <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
+    <LoggedPageContainer>
       {/* Column 1 */}
       <Sidebar></Sidebar>
 
@@ -39,6 +40,6 @@ export default function Bank() {
       >
         <Text>??</Text>
       </Flex>
-    </Flex>
+    </LoggedPageContainer>
     )
 }

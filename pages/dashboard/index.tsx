@@ -16,13 +16,14 @@ import { FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell 
 import { MyChart } from "components/MyChart";
 import { DoughnutChart } from "components/Doughnut";
 import { BarChart } from "components/StackedBar";
-import Sidebar from "components/sidebar/Sidebar";
+import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { Api } from "services/api";
 import { FinanceDataType } from "public/model/FinanceData";
 import StatementTable from "components/StatementTable";
+import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
 
 type DashboardPropsType = {
   timestamp: Date;
@@ -38,7 +39,7 @@ export default function Dashboard(props: DashboardPropsType) {
   let { user } = useContext(AuthContext);
 
   return (
-    <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
+    <LoggedPageContainer>
       {/* Column 1 */}
       <Sidebar></Sidebar>
 
@@ -275,7 +276,7 @@ export default function Dashboard(props: DashboardPropsType) {
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </LoggedPageContainer>
   );
 }
 

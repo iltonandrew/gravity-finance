@@ -1,14 +1,12 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import Content from "components/content/Content";
-import Sidebar from "components/sidebar/Sidebar";
-
+import Content from "components/PageComponents/content/Content";
+import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
+import Sidebar from "components/PageComponents/sidebar/Sidebar";
 
 export default function StatementPage() {
     return (
-        <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
+        <LoggedPageContainer>
             <Sidebar></Sidebar>
             <Content title="Extrato"></Content>
-                
-        </Flex>
+        </LoggedPageContainer>
     );
 }
