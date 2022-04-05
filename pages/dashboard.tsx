@@ -2,8 +2,6 @@ import React, { useContext, useState } from "react";
 import {
   Flex,
   Heading,
-  Avatar,
-  AvatarGroup,
   Text,
   Icon,
   IconButton,
@@ -14,7 +12,7 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { FiDollarSign, FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
+import { FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
 import Sidebar from "components/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
@@ -26,8 +24,8 @@ import StatementTable from "components/StatementTable";
 
 type DashboardPropsType = {
   timestamp: Date;
-  financeDataItems: FinanceDataType[]
-}
+  financeDataItems: FinanceDataType[];
+};
 
 export default function Dashboard(props: DashboardPropsType) {
   const [display, changeDisplay] = useState("hide");
@@ -244,36 +242,6 @@ export default function Dashboard(props: DashboardPropsType) {
             <Text fontWeight="bold">$150.00</Text>
           </Flex>
         </Flex>
-        <Heading letterSpacing="tight" size="md" my={4}>
-          Send money to
-        </Heading>
-        <Flex>
-          <AvatarGroup size="md" max={3}>
-            <Avatar src="avatar-3.jpg" />
-            <Avatar src="avatar-3.jpg" />
-            <Avatar src="avatar-4.jpg" />
-            <Avatar src="avatar-4.jpg" />
-            <Avatar src="avatar-4.jpg" />
-          </AvatarGroup>
-          <Avatar src="avatar-3.jpg" ml={2} color="#fff" bgColor="gray.300" />
-        </Flex>
-        <Text color="gray" mt={10} mb={2}>
-          Card number
-        </Text>
-        <InputGroup>
-          <InputLeftElement pointerEvents="none" children={<FiCreditCard color="gray.700" />} />
-          <Input type="number" placeholder="xxxx xxxx xxxx xxxx" />
-        </InputGroup>
-        <Text color="gray" mt={4} mb={2}>
-          Sum
-        </Text>
-        <InputGroup>
-          <InputLeftElement pointerEvents="none" children={<FiDollarSign color="gray.700" />} />
-          <Input type="number" placeholder="130.00" />
-        </InputGroup>
-        <Button mt={4} bgColor="blackAlpha.900" color="#fff" p={7} borderRadius={15}>
-          Send money
-        </Button>
       </Flex>
     </Flex>
   );
@@ -281,38 +249,39 @@ export default function Dashboard(props: DashboardPropsType) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { token } = parseCookies(ctx);
-  if(!token) {
-      return {
-          redirect: {
-              destination: '/login',
-              permanent: false,
-          }
-      }
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
   }
 
   const apiClient = Api(ctx);
-  
-  return apiClient.get('/financeData').then((res) => {
-    let timeStamp: Date;
-    let financeDataItems: FinanceDataType[];
 
-    if(!res.data) {
-      return {
-        props: { financeDataItems: [] }
+  return apiClient
+    .get("/financeData")
+    .then((res) => {
+      let timeStamp: Date;
+      let financeDataItems: FinanceDataType[];
+
+      if (!res.data) {
+        return {
+          props: { financeDataItems: [] },
+        };
       }
-    }
 
-    financeDataItems = res.data.financeDataItems as FinanceDataType[];
-    timeStamp = res.data.timeStamp;
+      financeDataItems = res.data.financeDataItems as FinanceDataType[];
+      timeStamp = res.data.timeStamp;
 
-    return {
-      props: {timeStamp, financeDataItems},
-    };
-  }).catch(() => {
-    return {
-      props: { },
-    };
-  })
-
-  
+      return {
+        props: { timeStamp, financeDataItems },
+      };
+    })
+    .catch(() => {
+      return {
+        props: {},
+      };
+    });
 };
