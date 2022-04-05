@@ -1,10 +1,11 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import BankCard from "components/my-banks/BankCard";
+import BankCard from "components/bank/BankCard";
+import Content from "components/content/Content";
 import Sidebar from "components/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { useContext } from "react";
 
-export default function MyBanks() {
+export default function Bank() {
 
     let { user } = useContext(AuthContext);
 
@@ -14,13 +15,10 @@ export default function MyBanks() {
         
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
       {/* Column 1 */}
-      <Sidebar userInfo={user}></Sidebar>
+      <Sidebar></Sidebar>
 
       {/* Column 2 */}
-      <Flex w={["100%", "100%", "60%", "60%", "55%"]} p="3%" flexDir="column" overflow="auto" minH="100vh">
-        <Heading fontWeight="normal" mb={4} letterSpacing="tight">
-          Meus Bancos
-        </Heading>
+      <Content title="Meus Bancos">
         {
           banks.map((bankName) => {
             return (
@@ -28,7 +26,7 @@ export default function MyBanks() {
             )
           })
         }
-      </Flex>
+      </Content>
 
       {/* Column 3 */}
       <Flex

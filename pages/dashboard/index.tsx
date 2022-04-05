@@ -40,7 +40,7 @@ export default function Dashboard(props: DashboardPropsType) {
   return (
     <Flex h={[null, null, "100vh"]} maxW="2000px" flexDir={["column", "column", "row"]} overflow="hidden">
       {/* Column 1 */}
-      <Sidebar userInfo={user}></Sidebar>
+      <Sidebar></Sidebar>
 
       {/* Column 2 */}
       <Flex w={["100%", "100%", "60%", "60%", "55%"]} p="3%" flexDir="column" overflow="auto" minH="100vh">

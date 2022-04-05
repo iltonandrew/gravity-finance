@@ -1,25 +1,32 @@
-import { Flex, Icon, Link, Spacer, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Link, Spacer, Text } from "@chakra-ui/react";
+import Router from "next/router";
 import { IconType } from "react-icons/lib";
 
 type SidebarItemPropsType = {
     icon: IconType,
-    name: string
+    name: string,
+    url: string
 }
 
 export default function SidebarItem( props: SidebarItemPropsType ) {
+
+    function onClick() {
+        Router.push(props.url)
+    }
+
     return (
         <>
-        <Flex className="sidebar-items" mr={[2, 6, 2, 0, 0]}>
-            <Spacer marginRight={4}/>
-            <Link display={["none", "none", "flex", "flex", "flex"]}>
-                <Icon as={props.icon} fontSize="2xl" className="active-icon" />
-            </Link>
-            <Spacer marginRight={4}/>
-            <Link _hover={{ textDecor: "none" }} display={["flex", "flex", "none", "flex", "flex"]}>
-                <Text className="active">{props.name}</Text>
-            </Link>
-        </Flex>
-        <Spacer marginBottom={2}/>
+        <Button
+            className="sidebar-items"
+            m='8px'
+            variant='link'
+            colorScheme='Orange'
+            onClick={onClick}
+        >
+            <Icon as={props.icon} fontSize="2xl" mx='8px' className="active-icon" />
+            <Spacer marginBottom={2}/>
+            <Text className="active">{props.name}</Text>
+        </Button>
         </>
 
     );
