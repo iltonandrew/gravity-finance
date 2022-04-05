@@ -25,7 +25,14 @@ export default function SidebarItem( props: SidebarItemPropsType ) {
         >
             <Icon as={props.icon} fontSize="2xl" mx='8px' className="active-icon" />
             <Spacer marginBottom={2}/>
-            <Text className="active">{props.name}</Text>
+            <Text
+                className="active"
+                color='#dbdbdb'
+                fontWeight={500}
+                fontFamily='Poppins'
+            >
+                {props.name}
+            </Text>
         </Button>
         </>
 

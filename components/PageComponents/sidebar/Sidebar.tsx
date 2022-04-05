@@ -1,4 +1,4 @@
-import { Flex, Heading, Avatar, Text } from "@chakra-ui/react";
+import { Flex, Heading, Avatar, Text, Image } from "@chakra-ui/react";
 import { FiHome, FiPieChart, FiDollarSign, FiBox } from "react-icons/fi";
 import SidebarItem from "./SidebarItems";
 import { User } from "../../../public/model/User";
@@ -24,14 +24,20 @@ export default function Sidebar() {
         justifyContent="space-between"
         bg="linear-gradient(174deg, rgba(34,47,70,1) 0%, rgb(213 167 65 / 58%) 100%)"
       >
-        <Flex flexDir="column" as="nav">
+        <Flex flexDir="column" as="nav" mt={50}>
+          <Flex justifyContent='center'>
+            <Image src='/planet.png' alt='logo' width='80px' height='80px' />
+          </Flex>
           <Heading
-            mt={50}
+            mt='24px'
             ml={4}
             mb={[25, 50, 100]}
             fontSize={["4xl", "4xl", "2xl", "3xl", "4xl"]}
             alignSelf="center"
             letterSpacing="tight"
+            color='#dbdbdb'
+            fontWeight={500} 
+            fontFamily='Poppins'
           >
             Gravity Finance
           </Heading>
