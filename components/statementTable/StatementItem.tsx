@@ -16,7 +16,7 @@ export default function StatementTableItem(props: StatementTableItemType) {
               {props.statement.establishmentName}
             </Heading>
             <Text fontSize="sm" color="gray">
-              {props.statement.referenceDate}
+              {new Date(props.statement.referenceDate).toLocaleString()}
             </Text>
           </Flex>
         </Flex>
@@ -24,9 +24,10 @@ export default function StatementTableItem(props: StatementTableItemType) {
       <Td>{props.statement.establishmentType}</Td>
       <Td isNumeric>
         <Text fontWeight="bold" display="inline-table">
-          -${props.statement.value}
+          ${props.statement.value}
         </Text>
       </Td>
+      <Td>{props.statement.originInstitution}</Td>
     </Tr>
   );
 }

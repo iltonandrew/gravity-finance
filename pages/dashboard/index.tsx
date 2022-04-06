@@ -5,16 +5,15 @@ import {
   Text,
   Icon,
   IconButton,
-  Divider,
   Box,
   Button,
   Input,
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { FiCalendar, FiChevronDown, FiChevronUp, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
+import { FiCalendar, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
-import { DoughnutChart } from "components/Doughnut";
+import DoughnutChart from "components/Doughnut";
 import { BarChart } from "components/StackedBar";
 import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
@@ -22,8 +21,9 @@ import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { Api } from "services/api";
 import { FinanceDataType } from "public/model/FinanceData";
-import StatementTable from "components/StatementTable";
+import StatementTable from "components/statementTable/StatementTable";
 import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
+import { format } from "date-fns";
 
 type DashboardPropsType = {
   timestamp: Date;
@@ -31,12 +31,16 @@ type DashboardPropsType = {
 };
 
 export default function Dashboard(props: DashboardPropsType) {
-  const [display, changeDisplay] = useState("hide");
+
   const [value, changeValue] = useState(1);
   const [chartValue, changeChartValue] = useState(1);
-  const [statements, setStatements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
-
+  const [statements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
+  
   let { user } = useContext(AuthContext);
+
+  const hadleRefresh = () => {
+    console.log('hadleRefresh')
+  }
 
   return (
     <LoggedPageContainer>
@@ -45,9 +49,9 @@ export default function Dashboard(props: DashboardPropsType) {
 
       {/* Column 2 */}
       <Flex w={["100%", "100%", "60%", "60%", "55%"]} p="3%" flexDir="column" overflow="auto" minH="100vh">
-        <Heading fontWeight="normal" mb={4} letterSpacing="tight">
+        <Heading fontWeight="normal" mb={4} letterSpacing="tight" fontFamily='Poppins'>
           Welcome back,{" "}
-          <Flex display="inline-flex" fontWeight="bold">
+          <Flex display="inline-flex" fontWeight="semibold">
             {user?.firstName}
           </Flex>
         </Heading>
@@ -87,37 +91,7 @@ export default function Dashboard(props: DashboardPropsType) {
           {chartValue == 3 && <BarChart />}
         </Flex>
 
-        <Flex justifyContent="space-between" mt={8}>
-          <Flex align="flex-end">
-            <Heading as="h2" size="lg" letterSpacing="tight">
-              Transactions
-            </Heading>
-            <Text fontSize="small" color="gray" ml={4}>
-              Apr 2021
-            </Text>
-          </Flex>
-          <IconButton icon={<FiCalendar />} aria-label="aa" />
-        </Flex>
-        <Flex flexDir="column">
-          <Flex overflow="auto">
-            <StatementTable statements={statements}></StatementTable>
-          </Flex>
-          <Flex align="center">
-            <Divider />
-            <IconButton
-              icon={display == "show" ? <FiChevronUp /> : <FiChevronDown />}
-              onClick={() => {
-                if (display == "show") {
-                  changeDisplay("none");
-                } else {
-                  changeDisplay("show");
-                }
-              }}
-              aria-label="aaa"
-            />
-            <Divider />
-          </Flex>
-        </Flex>
+        <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
       </Flex>
 
       {/* Column 3 */}
@@ -296,7 +270,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return apiClient
     .get("/financeData")
     .then((res) => {
-      let timeStamp: Date;
+      let timestamp: Date;
       let financeDataItems: FinanceDataType[];
 
       if (!res.data) {
@@ -306,10 +280,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
 
       financeDataItems = res.data.financeDataItems as FinanceDataType[];
-      timeStamp = res.data.timeStamp;
+      timestamp = res.data.timestamp as Date;
 
       return {
-        props: { timeStamp, financeDataItems },
+        props: { timestamp, financeDataItems },
       };
     })
     .catch(() => {
