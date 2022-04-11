@@ -1,6 +1,3 @@
-import next from "next";
-import { resolve } from "path";
-import { BASE_URL } from "../pages/api/constants";
 import { api } from "./api";
 
 type CredentialsType = {
@@ -51,10 +48,4 @@ export async function recoverUserInfo(token: string) {
     .catch(function (error) {
       console.log(error);
     });
-}
-
-export async function logOut() {
-  localStorage.removeItem("token");
-  // redirect to '/'
-  return;
 }

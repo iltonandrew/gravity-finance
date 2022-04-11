@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import BankCard from "components/bank/BankCard";
 import Content from "components/PageComponents/content/Content";
 import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
