@@ -14,7 +14,7 @@ import {
 import { FiCalendar, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
 import { MyChart } from "components/MyChart";
 import DoughnutChart from "components/Doughnut";
-import { BarChart } from "components/StackedBar";
+import StackedBarChart from "components/StackedBar";
 import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
@@ -88,7 +88,7 @@ export default function Dashboard(props: DashboardPropsType) {
         <Flex flex="1" alignItems="center">
           {chartValue == 1 && <MyChart />}
           {chartValue == 2 && <DoughnutChart />}
-          {chartValue == 3 && <BarChart />}
+          {chartValue == 3 && <StackedBarChart />}
         </Flex>
 
         <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp} onRefreshClicked={hadleRefresh}></StatementTable>

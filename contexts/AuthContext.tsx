@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { setCookie, parseCookies } from "nookies";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
 
 import { logIn, recoverUserInfo, register } from "../services/auth";
@@ -11,6 +11,7 @@ type AuthContextType = {
   isAuthenticated: boolean;
   signIn: (data: CredentialsType) => Promise<unknown>;
   signUp: (data: NewUserType) => Promise<unknown>;
+  logout: () => void;
 };
 
 type CredentialsType = {
@@ -93,5 +94,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     
   }
 
-  return <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp }}>{children}</AuthContext.Provider>;
+  function logout() {
+
+    delete api.defaults.headers.common["Authorization"];
+    
+    setUser(null);
+    destroyCookie({}, 'token');
+    Router.push("/");
+  }
+
+  return <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp, logout }}>{children}</AuthContext.Provider>;
 }

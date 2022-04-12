@@ -1,4 +1,4 @@
-import { Flex, Heading, Avatar, Text, Image } from "@chakra-ui/react";
+import { Flex, Heading, Avatar, Text, Image, Button } from "@chakra-ui/react";
 import { FiHome, FiPieChart, FiDollarSign, FiBox } from "react-icons/fi";
 import SidebarItem from "./SidebarItems";
 import { User } from "../../../public/model/User";
@@ -8,7 +8,11 @@ import { AuthContext } from "contexts/AuthContext";
 
 export default function Sidebar() {
 
-  let { user } = useContext(AuthContext);
+  let { user, logout } = useContext(AuthContext);
+
+  function handleLogout() {
+    logout()
+  }
 
   return (
     <Flex
@@ -63,6 +67,17 @@ export default function Sidebar() {
           <Text textAlign="center">
             {user?.firstName} {user?.lastName}
           </Text>
+          <Button
+            className="sidebar-items"
+            variant='link'
+            colorScheme='Orange'
+            color='#dbdbdb'
+            fontWeight={500}
+            fontFamily='Poppins'
+            onClick={handleLogout}
+          >
+            logout
+          </Button>
         </Flex>
       </Flex>
     </Flex>
