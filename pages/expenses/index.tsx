@@ -29,8 +29,8 @@ export default function ExpensesPage(props: ExpensesPagePropsType) {
             <RightPanelComponent title="Este Mês">
               
             <Flex h='400px'>
-                        <DoughnutChart data={props?.itemsBycategory}/>
-                    </Flex>
+                <DoughnutChart data={props?.itemsBycategory}/>
+            </Flex>
             </RightPanelComponent>
         </LoggedPageContainer>
     );

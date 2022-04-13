@@ -40,7 +40,7 @@ export default function MultipleLineChart(props){
         preset = presets.BanKoga
         preset.data = data2
         data.datasets.push(preset)
-        preset = presets.Nubank
+        preset = presets.NuBank
         preset.data = data3
         data.datasets.push(preset)
     }
@@ -72,8 +72,8 @@ export default function MultipleLineChart(props){
 }
 
 const presets = {
-    Nubank: {
-    label: "Nubank",
+    NuBank: {
+    label: "NuBank",
     fill: false,
     lineTension: 0.5,
     backgroundColor: "#B57295",
