@@ -19,7 +19,7 @@ import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
-import { Api } from "services/api";
+import { api, Api } from "services/api";
 import { FinanceDataType } from "public/model/FinanceData";
 import StatementTable from "components/statementTable/StatementTable";
 import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
@@ -34,12 +34,18 @@ export default function Dashboard(props: DashboardPropsType) {
 
   const [value, changeValue] = useState(1);
   const [chartValue, changeChartValue] = useState(1);
-  const [statements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
+  const [statements, setStatements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
+  const [timestamp, setTimestamp] = useState(new Date(props.timestamp));
+
   
   let { user } = useContext(AuthContext);
 
   const hadleRefresh = () => {
-    console.log('hadleRefresh')
+    api.get('/financeData/update').then((res) => {
+      console.log(res.data)
+      setStatements(res.data.financeData.financeDataItems)
+      setTimestamp(res.data.financeData.timestamp)
+    })
   }
 
   return (
@@ -91,7 +97,7 @@ export default function Dashboard(props: DashboardPropsType) {
           {chartValue == 3 && <StackedBarChart />}
         </Flex>
 
-        <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
+        <StatementTable title="Transactions" statements={statements} lastUpdate={timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
       </Flex>
 
       {/* Column 3 */}
