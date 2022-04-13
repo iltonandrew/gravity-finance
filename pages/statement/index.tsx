@@ -8,7 +8,7 @@ import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { FinanceDataType } from "public/model/FinanceData";
 import { Api } from "services/api";
-import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
 type StatementPagePropsType = {
     timestamp: Date;
@@ -17,18 +17,25 @@ type StatementPagePropsType = {
 
 export default function StatementPage(props: StatementPagePropsType) {
 
-    const lineChartData: {[id: string]: number[]} = {};
+    const [lineChartData, setLineChartData] = useState<{[id: string]: number[]}>({})
+    const [statements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
 
     // generate line chart data
     const currentMonth: number = new Date().getMonth() + 1;
-    
-    props.financeDataItems.forEach((item: FinanceDataType) => {
-        if(!(item.originInstitution in lineChartData)) 
-            lineChartData[item.originInstitution] = Array(currentMonth).fill(0)
+
+    useEffect(() => {
+      const data: {[id: string]: number[]} = {}
+      props.financeDataItems.forEach((item: FinanceDataType) => {
+
+        if(!(item.originInstitution in data)) 
+          data[item.originInstitution] = Array(currentMonth).fill(0)
         
         const month: number = new Date(item.referenceDate).getMonth()
-        lineChartData[item.originInstitution][month] += item.value
-    })
+        data[item.originInstitution][month] += item.value
+ 
+      })
+      setLineChartData(data)
+    }, [])
 
     return (
         <LoggedPageContainer>
@@ -37,7 +44,7 @@ export default function StatementPage(props: StatementPagePropsType) {
                 <Flex height='50vh'>
                     <MultipleLineChart data={lineChartData}/>
                 </Flex>
-                <StatementTable title="Extrato" statements={props.financeDataItems} lastUpdate={props.timestamp}></StatementTable>
+                <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp}></StatementTable>
             </Content>
         </LoggedPageContainer>
     );
@@ -60,11 +67,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .get("/financeData")
     .then((res) => {
       let timestamp: Date;
-      let financeDataItems: FinanceDataType[];
+      let financeDataItems: FinanceDataType[] = [];
 
       if (!res.data) {
         return {
-          props: { financeDataItems: [] },
+          props: { financeDataItems },
         };
       }
 

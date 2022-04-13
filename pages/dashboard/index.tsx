@@ -271,11 +271,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .get("/financeData")
     .then((res) => {
       let timestamp: Date;
-      let financeDataItems: FinanceDataType[];
+      let financeDataItems: FinanceDataType[] = [];
 
       if (!res.data) {
         return {
-          props: { financeDataItems: [] },
+          props: { financeDataItems },
         };
       }
 
