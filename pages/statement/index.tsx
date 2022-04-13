@@ -44,7 +44,7 @@ export default function StatementPage(props: StatementPagePropsType) {
                 <Flex height='50vh'>
                     <MultipleLineChart data={lineChartData}/>
                 </Flex>
-                <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp}></StatementTable>
+                <StatementTable title="Transações" statements={statements} lastUpdate={props.timestamp}></StatementTable>
             </Content>
         </LoggedPageContainer>
     );

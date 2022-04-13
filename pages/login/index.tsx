@@ -79,7 +79,7 @@ export default function Login() {
             Entrar
           </Button>
           <NextLink href="/login/new" passHref>
-            <Link>New User</Link>
+            <Link>Novo usuário</Link>
           </NextLink>
         </Box>
       </Stack>

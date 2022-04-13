@@ -89,7 +89,7 @@ export default function Dashboard(props: DashboardPropsType) {
           <MyChart dataItems={chartData} />
         </Flex>
 
-        <StatementTable title="Transactions" statements={statements} lastUpdate={timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
+        <StatementTable title="Transações" statements={statements} lastUpdate={timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
       </Flex>
 
       {/* Column 3 */}

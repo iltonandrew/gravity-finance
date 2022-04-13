@@ -20,7 +20,7 @@ export default function MultipleLineChart(props){
     const data2 = [null, 275, 100, 500, 400, 250, 100, 1090, 100, 200, 1100, 1000].slice(0, new Date().getMonth()+1);
     const data3 = [1548, 2417, 1434, 268, 2188, 879, 1547, 1090, 80, 393, 1658, 1917].slice(0, new Date().getMonth()+1);
 
-    const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].slice(0, new Date().getMonth()+1)
+    const monthLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"].slice(0, new Date().getMonth()+1)
 
     const data = {
     labels: monthLabels,
