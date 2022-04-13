@@ -86,7 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     
         setUser(user);
-        Router.push("/dashboard");
+        Router.push("/bank");
   
       }, (err) => reject(err));
     })

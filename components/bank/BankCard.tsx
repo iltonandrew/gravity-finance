@@ -1,8 +1,10 @@
 import { Image, Box, Heading, Stack, Center, Spacer, IconButton } from "@chakra-ui/react";
+import { MouseEventHandler } from "react";
 import { MdEdit } from 'react-icons/md'
 
 type CardPropsType = {
     name: string;
+    onDeleteClicked?: MouseEventHandler<HTMLButtonElement> | undefined
   };
 
 
@@ -14,28 +16,29 @@ const imageUrls: { [id: string]: string; } = {
 
 export default function BankCard(props: CardPropsType) {
 
-    function openEdit() {
+    function openDelete() {
         console.log('Edit ' + props.name)
     }
 
     return (
-        <Box maxW='sm' borderWidth='2px' m='8px' p='8px' borderRadius='lg' overflow='hidden'>
+        <Box w='sm' borderWidth='2px' m='8px' p='8px' borderRadius='lg' overflow='hidden'>
             <Stack flexDir='row'>
                 <Image
                     src={imageUrls[props.name.toLocaleLowerCase()]}
                     alt={props.name + ' image'}
                     borderRadius='full'
                     boxSize='100px'
+                    mr="8px"
                     />
                 <Center>
                     <Heading as='h3' size={'sm'} ml='4px'> {props.name} </Heading>
                 </Center>
                 <Spacer></Spacer>
-                <IconButton
+                {/* <IconButton
                     icon={<MdEdit />}
-                    aria-label='Edit'
-                    onClick={openEdit}
-                />
+                    aria-label='delete'
+                    onClick={openDelete}
+                /> */}
             </Stack>
         </Box>
     );
