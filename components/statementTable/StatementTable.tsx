@@ -26,7 +26,7 @@ export default function StatementTable(props: StatementTableType) {
               {props.title}
             </Heading>
             <Text fontSize="small" color="gray" ml={4}>
-              {props.lastUpdate && "Updated at" + new Date(props.lastUpdate).toLocaleString()}
+              {props.lastUpdate && "Updated at " + new Date(props.lastUpdate).toLocaleString()}
             </Text>
           </Flex>
           <IconButton icon={<FiRefreshCcw />} onClick={props.onRefreshClicked} aria-label="aa" />

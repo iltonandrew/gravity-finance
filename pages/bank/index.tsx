@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, FormErrorMessage, Heading, HStack, PinInput, PinInputField, Radio, RadioGroup, Select } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, FormErrorMessage,  HStack, PinInput, PinInputField,  Select, Text } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import BankCard from "components/bank/BankCard";
 import Content from "components/PageComponents/content/Content";
@@ -46,6 +46,8 @@ export default function BankPage(props: BankPage) {
     const onSubmit = (data: NewBankType) => {
       api.post('/banks/new', data).then((res) =>{
         setBanks(res.data.banks)
+      }).then(() => {
+        api.get('/financeData/update')
       })
     }
 
@@ -57,11 +59,19 @@ export default function BankPage(props: BankPage) {
         {/* Column 2 */}
         <Content title="Meus Bancos">
           {
+            banks.length !== 0 ?
             banks.map((bank) => {
               return (
                 <BankCard name={bank.name}></BankCard>
               )
-            })
+            }) :
+            <Text
+                className="active"
+                fontWeight={500}
+                fontFamily='Poppins'
+            >
+                Você ainda não tem nenhuma conexão cadastrada com seus bancos  :(
+            </Text>
           }
 
         </Content>

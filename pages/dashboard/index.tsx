@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Flex,
   Heading,
@@ -12,14 +12,14 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { FiCalendar, FiCreditCard, FiSearch, FiBell } from "react-icons/fi";
-import { MyChart } from "components/MyChart";
+import MyChart from "components/MyChart";
 import DoughnutChart from "components/Doughnut";
 import StackedBarChart from "components/StackedBar";
 import Sidebar from "components/PageComponents/sidebar/Sidebar";
 import { AuthContext } from "contexts/AuthContext";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
-import { Api } from "services/api";
+import { api, Api } from "services/api";
 import { FinanceDataType } from "public/model/FinanceData";
 import StatementTable from "components/statementTable/StatementTable";
 import LoggedPageContainer from "components/PageComponents/LoggedPageContainer";
@@ -30,16 +30,39 @@ type DashboardPropsType = {
   financeDataItems: FinanceDataType[];
 };
 
+
 export default function Dashboard(props: DashboardPropsType) {
 
   const [value, changeValue] = useState(1);
-  const [chartValue, changeChartValue] = useState(1);
-  const [statements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
+  const [chartData, setChartData] = useState<number[]>([]);
+  const [statements, setStatements] = useState<FinanceDataType[]>(props.financeDataItems as FinanceDataType[]);
+  const [timestamp, setTimestamp] = useState(new Date(props.timestamp));
+  const [meusGastos, setMeusGastos] = useState<number>(0);
   
   let { user } = useContext(AuthContext);
 
+  function calculateChartData(statements: FinanceDataType[]) {
+    const chartDataArray = Array(new Date().getMonth()+1).fill(0);
+    let tempMeusGastos = 0;
+    statements.forEach(statement => {
+      chartDataArray[new Date(statement.referenceDate).getMonth()] += statement.value;
+      tempMeusGastos += statement.value;
+    });
+    setChartData(chartDataArray)
+    setMeusGastos(tempMeusGastos)
+  }
+
+  useEffect(() => {
+    calculateChartData(statements)
+  }, []);
+
   const hadleRefresh = () => {
-    console.log('hadleRefresh')
+    api.get('/financeData/update').then((res) => {
+      console.log(res.data)
+      setStatements(res.data.financeData.financeDataItems)
+      setTimestamp(res.data.financeData.timestamp)
+      calculateChartData(statements)
+    })
   }
 
   return (
@@ -50,48 +73,23 @@ export default function Dashboard(props: DashboardPropsType) {
       {/* Column 2 */}
       <Flex w={["100%", "100%", "60%", "60%", "55%"]} p="3%" flexDir="column" overflow="auto" minH="100vh">
         <Heading fontWeight="normal" mb={4} letterSpacing="tight" fontFamily='Poppins'>
-          Welcome back,{" "}
+          Bem vindo,{" "}
           <Flex display="inline-flex" fontWeight="semibold">
             {user?.firstName}
           </Flex>
         </Heading>
-        <Flex justifyContent="center" mt={2}>
-          <Button
-            title="Line Chart"
-            bgColor={chartValue == 1 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeChartValue(1)}
-          />
-          <Button
-            title="Doughnut Chart"
-            bgColor={chartValue == 2 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeChartValue(2)}
-          />
-          <Button
-            title="Bar Chart"
-            bgColor={chartValue == 3 ? "gray.600" : "gray.400"}
-            size="xs"
-            mx={1}
-            onClick={() => changeChartValue(3)}
-          />
-        </Flex>
         <Text color="gray" fontSize="sm">
-          My Balance
+          Meus Gastos
         </Text>
         <Text fontWeight="bold" fontSize="2xl">
-          $5,750.20
+          ${meusGastos.toLocaleString(undefined,{ minimumFractionDigits: 2 })}
         </Text>
 
         <Flex flex="1" alignItems="center">
-          {chartValue == 1 && <MyChart />}
-          {chartValue == 2 && <DoughnutChart />}
-          {chartValue == 3 && <StackedBarChart />}
+          <MyChart dataItems={chartData} />
         </Flex>
 
-        <StatementTable title="Transactions" statements={statements} lastUpdate={props.timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
+        <StatementTable title="Transactions" statements={statements} lastUpdate={timestamp} onRefreshClicked={hadleRefresh}></StatementTable>
       </Flex>
 
       {/* Column 3 */}

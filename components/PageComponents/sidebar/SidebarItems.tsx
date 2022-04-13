@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Link, Spacer, Text } from "@chakra-ui/react";
+import { Button, Icon, Spacer, Text } from "@chakra-ui/react";
 import Router from "next/router";
 import { IconType } from "react-icons/lib";
 
