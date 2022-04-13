@@ -26,7 +26,7 @@ export default function StatementTable(props: StatementTableType) {
               {props.title}
             </Heading>
             <Text fontSize="small" color="gray" ml={4}>
-              {props.lastUpdate && "Updated at " + new Date(props.lastUpdate).toLocaleString()}
+              {props.lastUpdate && "Ultima atualização " + new Date(props.lastUpdate).toLocaleString()}
             </Text>
           </Flex>
           <IconButton icon={<FiRefreshCcw />} onClick={props.onRefreshClicked} aria-label="aa" />
@@ -36,10 +36,10 @@ export default function StatementTable(props: StatementTableType) {
         <Table variant="unstyled" mt={4}>
           <Thead>
             <Tr color="gray">
-              <Th>Establishment</Th>
-              <Th>Category</Th>
-              <Th isNumeric>Money Spent</Th>
-              <Th>Bank</Th>
+              <Th>Estabelecimento</Th>
+              <Th>Categoria</Th>
+              <Th isNumeric>Valor Gasto</Th>
+              <Th>Banco</Th>
             </Tr>
           </Thead>
           <Tbody>
